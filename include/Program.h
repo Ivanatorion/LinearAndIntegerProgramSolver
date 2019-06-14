@@ -1,6 +1,8 @@
 #include <string>
 #include <vector>
 
+enum SolverResult {OPTIMAL, UNBOUND, UNFEASIBLE, INVALID};
+
 typedef std::vector<double> Vet;
 
 typedef struct vars{
@@ -19,7 +21,10 @@ class Program{
 
     void printProgram();
 
-    void optimize();
+    double getObjectiveValue();
+    VarVet getVars();
+
+    SolverResult optimize(bool verbose);
 
     bool isValid(){return valid;}
     bool isOptimal(){return optimal;}
@@ -31,9 +36,14 @@ class Program{
     CoefMatrix A;
     bool valid, optimal;
 
+    SolverResult simplex(bool verbose);
+    void printDict(Vet tempC, CoefMatrix tempA, VarVet base);
+
     double dAbs(double d);
 
     void printLineMult(Vet v, VarVet x);
 
     void verifyValidForm();
+
+    void removeVar(std::string name);
 };
